@@ -5,6 +5,7 @@ import com.bannrx.common_service.apis.UpdateUserApi;
 import com.bannrx.common.dtos.SignUpRequest;
 import com.bannrx.common.dtos.UserDto;
 import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import rklab.utility.annotations.Loggable;
 import rklab.utility.dto.ApiOutput;
@@ -23,7 +24,7 @@ public class UserController {
     private final DeleteUserApi deleteUserApi;
 
     @PostMapping("/add")
-    public ApiOutput<?> addUser(@RequestBody SignUpRequest request) throws InvalidInputException {
+    public ApiOutput<?> addUser(@RequestBody @Valid SignUpRequest request) throws InvalidInputException, ServerException {
         return addUserApi.process(request);
     }
 

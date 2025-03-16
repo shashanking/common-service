@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import rklab.utility.dto.ApiOutput;
 import rklab.utility.expectations.InvalidInputException;
+
+import java.util.List;
 import java.util.Objects;
 
 
@@ -21,13 +23,10 @@ public class AddAddressApi {
     @Autowired
     private AddressService addressService;
 
-    @Autowired
-    private UserService userService;
-
-    public ApiOutput<AddressDto> addAddress(AddressDto addressDto){
+    public ApiOutput<?> addAddress(AddressDto addressDto){
         try{
             validate(addressDto);
-            AddressDto response = addressService.addAddress(addressDto);
+            var response = addressService.save(List.of(addressDto));
             return new ApiOutput<>(HttpStatus.OK.value(), ADD_ADDRESS_MSG,response);
         } catch (Exception e) {
             return new ApiOutput<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
@@ -38,7 +37,6 @@ public class AddAddressApi {
         if(Objects.isNull(addressDto)){
             throw new NullPointerException("Address is null or empty please add something");
         }
-        User user = userService.findByPhoneNo(addressDto.getPhoneNo());
 
         if(StringUtil.isNullOrEmpty(addressDto.getAddressLine1())){
             throw new InvalidInputException("Address Line is not provided");
@@ -58,7 +56,7 @@ public class AddAddressApi {
         if(Objects.isNull(addressDto.getLatitude())){
             throw new InvalidInputException("Latitude is not provided");
         }
-        addressService.canAddressBeAdded(user, addressDto);
+//        addressService.canAddressBeAdded(user, addressDto);
         /*if(addressService.isSameAddressExist(addressDto,user)){
             throw new InvalidInputException("Address already exist");
         }*/
