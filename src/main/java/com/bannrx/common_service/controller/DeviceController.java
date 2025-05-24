@@ -1,6 +1,7 @@
 package com.bannrx.common_service.controller;
 
 import com.bannrx.common.dtos.device.DeviceDto;
+import com.bannrx.common.searchCriteria.DeviceSearchCriteria;
 import com.bannrx.common_service.apis.AddDeviceApi;
 import com.bannrx.common_service.apis.DeleteDeviceApi;
 import com.bannrx.common_service.apis.FetchAllDeviceApi;
@@ -40,7 +41,7 @@ public class DeviceController {
     }
 
     @GetMapping("/all")
-    public ApiOutput<?> fetchAllDevice() throws ServerException {
-        return fetchAllDeviceApi.process();
+    public ApiOutput<?> fetchAllDevice(DeviceSearchCriteria searchCriteria) throws ServerException {
+        return fetchAllDeviceApi.process(searchCriteria);
     }
 }
